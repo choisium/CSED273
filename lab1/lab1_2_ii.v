@@ -8,8 +8,9 @@ module lab1_2_ii(outOR, inA, inB);
     output wire outOR;
     input wire inA, inB;
 
-    ////////////////////////
-    /* Add your code here */
-    ////////////////////////
+    not(notA, inA);         // A'
+    not(notB, inB);         // B'
+    and(temp, notA, notB);  // A'B'
+    not(outOR, temp);       // (A'B')'
 
 endmodule

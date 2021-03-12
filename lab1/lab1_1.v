@@ -8,7 +8,7 @@ module lab1_1(outAND, inA, inB);
     input wire inA, inB;
 
     ////////////////////////
-    /* Add your code here */
+    and(outAND, inA, inB);
     ////////////////////////
 
 endmodule

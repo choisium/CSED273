@@ -6,9 +6,9 @@ module lab1_2_iv(outAND, outOR, outNOT, inA, inB);
     output wire outAND, outOR, outNOT;
     input wire inA, inB;
 
-    AND(outAND, inA, inB);
-    OR(outOR, inA, inB);
-    NOT(outNOT, inA);
+    AND andGate(outAND, inA, inB);
+    OR orGate(outOR, inA, inB);
+    NOT notGate(outNOT, inA);
 
 endmodule
 
@@ -20,9 +20,9 @@ module AND(outAND, inA, inB);
     output wire outAND;
     input wire inA, inB; 
 
-    ////////////////////////
-    /* Add your code here */
-    ////////////////////////
+    NOT(notA, inA);             // A'
+    NOT(notB, inB);             // B'
+    nor(outAND, notA, notB);      // (A'+B')' = AB
 
 endmodule
 
@@ -30,9 +30,8 @@ module OR(outOR, inA, inB);
     output wire outOR;
     input wire inA, inB;
 
-    ////////////////////////
-    /* Add your code here */
-    ////////////////////////
+    nor(temp, inA, inB);        // (A+B)' = A'B'
+    NOT(outOR, temp);           // ((A+B)')' = A+B
 
 endmodule
 
@@ -40,8 +39,6 @@ module NOT(outNOT, inA);
     output wire outNOT;
     input wire inA; 
 
-    ////////////////////////
-    /* Add your code here */
-    ////////////////////////
+    nor(outNOT, inA, inA);      // (A+A)' = A'
 
 endmodule

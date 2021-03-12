@@ -6,14 +6,16 @@
 module lab1_1_tb();
     wire out;
     reg A, B;
+    integer count;
     
     lab1_1 AND(out, A,B);
     
 	/* Initialize A and B */
     initial begin
-		////////////////////////
-		/* Add your code here */
-		////////////////////////
+        A = 1;
+        B = 1;
+		count = 0;
+        #10 $finish;
     end
 	
 	/* Flip A every 1ns */
@@ -23,8 +25,13 @@ module lab1_1_tb();
 	
 	/* Flip B every 2ns */
     always begin
-		////////////////////////
-		/* Add your code here */
-		////////////////////////
+        #2 B <= !B;
     end
+
+    always @(*) begin
+        count = count + 1;
+        if(out === A & B) $display("Count %d: Pass",count);
+        else $display("Count %d: Fail (out: %b, expected: %b)", count, out, A&B);
+    end
+
 endmodule
