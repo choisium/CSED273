@@ -21,7 +21,7 @@ module AND(outAND, inA, inB);
     input wire inA, inB; 
 
     nand(temp, inA, inB);       // (AB)' = A'+B'
-    NOT notGate(outAND, temp);          // ((AB)')' = AB
+    NOT notGate(outAND, temp);  // ((AB)')' = AB
 
 endmodule
 
@@ -29,8 +29,8 @@ module OR(outOR, inA, inB);
     output wire outOR;
     input wire inA, inB; 
     
-    NOT notGate(notA, inA);             // A' 
-    NOT notGate2(notB, inB);             // B'
+    NOT notGate(notA, inA);     // A'
+    NOT notGate2(notB, inB);    // B'
     nand(outOR, notA, notB);    // (A'B')' = A+B
 
 endmodule

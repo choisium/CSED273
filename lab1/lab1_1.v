@@ -7,8 +7,6 @@ module lab1_1(outAND, inA, inB);
     output wire outAND;
     input wire inA, inB;
 
-    ////////////////////////
     and(outAND, inA, inB);
-    ////////////////////////
 
 endmodule

@@ -20,9 +20,9 @@ module AND(outAND, inA, inB);
     output wire outAND;
     input wire inA, inB; 
 
-    NOT notGate(notA, inA);             // A'
-    NOT notGate2(notB, inB);             // B'
-    nor(outAND, notA, notB);      // (A'+B')' = AB
+    NOT notGate(notA, inA);      // A'
+    NOT notGate2(notB, inB);     // B'
+    nor(outAND, notA, notB);     // (A'+B')' = AB
 
 endmodule
 
@@ -30,8 +30,8 @@ module OR(outOR, inA, inB);
     output wire outOR;
     input wire inA, inB;
 
-    nor(temp, inA, inB);        // (A+B)' = A'B'
-    NOT notGate(outOR, temp);           // ((A+B)')' = A+B
+    nor(temp, inA, inB);         // (A+B)' = A'B'
+    NOT notGate(outOR, temp);    // ((A+B)')' = A+B
 
 endmodule
 
@@ -39,6 +39,6 @@ module NOT(outNOT, inA);
     output wire outNOT;
     input wire inA;
 
-    nor(outNOT, inA, inA);      // (A+A)' = A'
+    nor(outNOT, inA, inA);       // (A+A)' = A'
 
 endmodule
