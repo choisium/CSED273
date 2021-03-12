@@ -4,17 +4,11 @@
 `timescale 1ns / 1ps
 
 module lab1_2_tb();
-    wire and1;
-    wire or2;
     wire and3, or3, not3;
-    wire and4, or4, not4;
     reg A, B;
-    integer count;
     
-    // AND AND3(and1, A, B);
-    // OR OR3(or2, A, B);
-    // NOT NOT3(and4, or4, not4, A, B);
-    lab1_2_iii NAND(and3, or3, not3, A, B);
+//    lab1_2_ii OR(or3, A, B);
+    lab1_2_iv NOR(and3, or3, not3, A, B);
     
 	/* Initialize A and B */
     initial begin
