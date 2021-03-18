@@ -23,9 +23,9 @@ module CAL_GT_2(
     input wire [1:0] inB
     );
 
-    ////////////////////////
-    /* Add your code here */
-    ////////////////////////
+    assign outGT = ((inA[1] & ~inB[1]) |
+                    (inA[0] & ~inB[1] & ~inB[0]) |
+                    (inA[1] & inA[0] & ~inB[0]));
 
 endmodule
 
@@ -36,9 +36,10 @@ module CAL_EQ_2(
     input wire [1:0] inB
     );
 
-    ////////////////////////
-    /* Add your code here */
-    ////////////////////////
+    assign outEQ = ((~inA[1] & ~inA[0] & ~inB[1] & ~inB[0]) |
+                    (~inA[1] & inA[0] & ~inB[1] & inB[0]) |
+                    (inA[1] & inA[0] & inB[1] & inB[0]) |
+                    (inA[1] & ~inA[0] & inB[1] & ~inB[0]));
 
 endmodule
 
@@ -49,8 +50,8 @@ module CAL_LT_2(
     input wire [1:0] inB
     );
 
-    ////////////////////////
-    /* Add your code here */
-    ////////////////////////
+    assign outLT = ((~inA[1] & inB[1]) |
+                    (~inA[0] & ~inA[1] & inB[0]) |
+                    (~inA[0] & inB[1] & inB[0]));
 
 endmodule
