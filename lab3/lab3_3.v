@@ -32,8 +32,21 @@ module lab3_3(
     output wire out
     );
 
-    ////////////////////////
-    /* Add your code here */
-    ////////////////////////
+    wire[7:0] data_input;
+
+    assign data_input[0] = 0;
+    assign data_input[1] = in[1] & in[0];
+    assign data_input[2] = in[1] & in[0];
+    assign data_input[3] = in[1] | in[0];
+    assign data_input[4] = in[1] & in[0];
+    assign data_input[5] = in[1] | in[0];
+    assign data_input[6] = in[1] | in[0];
+    assign data_input[7] = 1;
+
+    mux Mux(
+        .data_input(data_input),
+        .select_input(in[4:2]),
+        .out(out)
+    );
 
 endmodule

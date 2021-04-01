@@ -14,8 +14,34 @@ module lab3_2(
     output wire [4:0] out_mul
     );
 
-    ////////////////////////
-    /* Add your code here */
-    ////////////////////////
+    assign out_prime = ((in[2] & ~in[1] & in[0])
+                      | (~in[3] & in[2] & in[0])
+                      | (~in[2] & in[1] & in[0])
+                      | (~in[3] & ~in[2] & in[1]));
+    
+    // multiple of 2
+    assign out_mul[0] = in[0];
+
+    // multiple of 3
+    assign out_mul[1] = ((~in[3] & ~in[2] & ~in[1] & ~in[0])
+                       | (~in[3] & ~in[2] & in[1] & in[0])
+                       | (~in[3] & in[2] & in[1] & ~in[0])
+                       | (in[3] & in[2] & in[1] & in[0])
+                       | (in[3] & ~in[2] & ~in[1] & in[0]));
+
+    // multiple of 5
+    assign out_mul[2] = ((~in[3] & ~in[2] & ~in[1] & ~in[0])
+                       | (~in[3] & in[2] & ~in[1] & in[0])
+                       | (in[3] & in[2] & in[1] & in[0])
+                       | (in[3] & ~in[2] & in[1] & ~in[0]));
+
+    // multiple of 7
+    assign out_mul[3] = ((~in[3] & ~in[2] & ~in[1] & ~in[0])
+                       | (~in[3] & in[2] & in[1] & in[0])
+                       | (in[3] & in[2] & in[1] & ~in[0]));
+
+    // multiple of 11
+    assign out_mul[4] = ((~in[3] & ~in[2] & ~in[1] & ~in[0])
+                       | (in[3] & ~in[2] & in[1] & in[0]));
 
 endmodule

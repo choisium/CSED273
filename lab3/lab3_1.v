@@ -27,8 +27,33 @@ module lab3_1(
     output wire [15:0] out
     );
 
-    ////////////////////////
-    /* Add your code here */
-    ////////////////////////
+    wire[3:0] main_out;
+
+    decoder main_decoder(
+        .en(en),
+        .in(in[3:2]),
+        .out(main_out)
+    );
+
+    decoder decoder1(
+        .en(main_out[0]),
+        .in(in[1:0]),
+        .out(out[3:0])
+    );
+    decoder decoder2(
+        .en(main_out[1]),
+        .in(in[1:0]),
+        .out(out[7:4])
+    );
+    decoder decoder3(
+        .en(main_out[2]),
+        .in(in[1:0]),
+        .out(out[11:8])
+    );
+    decoder decoder4(
+        .en(main_out[3]),
+        .in(in[1:0]),
+        .out(out[15:12])
+    );
 
 endmodule
