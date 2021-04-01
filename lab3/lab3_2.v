@@ -20,12 +20,13 @@ module lab3_2(
                       | (~in[3] & ~in[2] & in[1]));
     
     // multiple of 2
-    assign out_mul[0] = in[0];
+    assign out_mul[0] = ~in[0];
 
     // multiple of 3
     assign out_mul[1] = ((~in[3] & ~in[2] & ~in[1] & ~in[0])
                        | (~in[3] & ~in[2] & in[1] & in[0])
                        | (~in[3] & in[2] & in[1] & ~in[0])
+                       | (in[3] & in[2] & ~in[1] & ~in[0])
                        | (in[3] & in[2] & in[1] & in[0])
                        | (in[3] & ~in[2] & ~in[1] & in[0]));
 
