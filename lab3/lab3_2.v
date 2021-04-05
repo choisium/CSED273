@@ -23,26 +23,22 @@ module lab3_2(
     assign out_mul[0] = ~in[0];
 
     // multiple of 3
-    assign out_mul[1] = ((~in[3] & ~in[2] & ~in[1] & ~in[0])
-                       | (~in[3] & ~in[2] & in[1] & in[0])
+    assign out_mul[1] = ((~in[3] & ~in[2] & in[1] & in[0])
                        | (~in[3] & in[2] & in[1] & ~in[0])
                        | (in[3] & in[2] & ~in[1] & ~in[0])
                        | (in[3] & in[2] & in[1] & in[0])
                        | (in[3] & ~in[2] & ~in[1] & in[0]));
 
     // multiple of 5
-    assign out_mul[2] = ((~in[3] & ~in[2] & ~in[1] & ~in[0])
-                       | (~in[3] & in[2] & ~in[1] & in[0])
+    assign out_mul[2] = ((~in[3] & in[2] & ~in[1] & in[0])
                        | (in[3] & in[2] & in[1] & in[0])
                        | (in[3] & ~in[2] & in[1] & ~in[0]));
 
     // multiple of 7
-    assign out_mul[3] = ((~in[3] & ~in[2] & ~in[1] & ~in[0])
-                       | (~in[3] & in[2] & in[1] & in[0])
+    assign out_mul[3] = ((~in[3] & in[2] & in[1] & in[0])
                        | (in[3] & in[2] & in[1] & ~in[0]));
 
     // multiple of 11
-    assign out_mul[4] = ((~in[3] & ~in[2] & ~in[1] & ~in[0])
-                       | (in[3] & ~in[2] & in[1] & in[0]));
+    assign out_mul[4] = ((in[3] & ~in[2] & in[1] & in[0]));
 
 endmodule
