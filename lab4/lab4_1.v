@@ -12,9 +12,8 @@ module halfAdder(
     output out_c
     );
 
-    ////////////////////////
-    /* Add your code here */
-    ////////////////////////
+    assign out_c = in_a & in_b;
+    assign out_s = (~in_a & in_b) | (in_a & ~in_b);
 
 endmodule
 
@@ -30,8 +29,22 @@ module fullAdder(
     output out_c
     );
 
-    ////////////////////////
-    /* Add your code here */
-    ////////////////////////
+    wire a_xor_b, a_and_b, a_xor_b_and_c;
+
+    assign out_c = a_xor_b_and_c | a_and_b;
+
+    halfAdder HA1(
+        .in_a(in_a),
+        .in_b(in_b),
+        .out_s(a_xor_b),
+        .out_c(a_and_b)
+    );
+
+    halfAdder HA2(
+        .in_a(a_xor_b),
+        .in_b(in_c),
+        .out_s(out_s),
+        .out_c(a_xor_b_and_c)
+    );
 
 endmodule

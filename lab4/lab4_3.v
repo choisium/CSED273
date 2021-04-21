@@ -13,8 +13,12 @@ module lab4_3(
     output out_c
     );
 
-    ////////////////////////
-    /* Add your code here */
-    ////////////////////////
+    lab4_2 RippleAdder(
+        .in_a(in_a),
+        .in_b(~in_b),
+        .in_c(in_c),
+        .out_s(out_s),
+        .out_c(out_c)
+    );
 
 endmodule

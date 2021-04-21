@@ -34,6 +34,7 @@ module lab4_4_tb();
 		   end
 		   #1 A = A + 5'b0001;
 		end
+		$display("pass: %d, fail: %d", Pass, Fail);
 	    #1 $finish;
 	end
 endmodule
