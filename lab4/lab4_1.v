@@ -12,8 +12,10 @@ module halfAdder(
     output out_c
     );
 
-    assign out_c = in_a & in_b;
-    assign out_s = (~in_a & in_b) | (in_a & ~in_b);
+//    assign out_c = in_a & in_b;
+//    assign out_s = (~in_a & in_b) | (in_a & ~in_b);
+    and(out_c, in_a, in_b);
+    xor(out_s, in_a, in_b);
 
 endmodule
 
