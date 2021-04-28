@@ -60,7 +60,7 @@ module lab5_1_tb();
         reg c_out_expected;
         begin
             $display("arithmetic_transfer_test");
-            select = 1'h0;
+            select = 4'h0;
             for (i=0; i < 16; i = i + 1) begin
                 for (j=0; j < 16; j = j + 1) begin
                     x = i;
@@ -89,7 +89,7 @@ module lab5_1_tb();
         reg c_out_expected;
         begin
             $display("arithmetic_increment_test");
-            select = 1'h1;
+            select = 4'h1;
             for (i=0; i < 16; i = i + 1) begin
                 for (j=0; j < 16; j = j + 1) begin
 
@@ -119,7 +119,7 @@ module lab5_1_tb();
         reg c_out_expected;
         begin
             $display("arithmetic_add_test");
-            select = 1'h2;
+            select = 4'h2;
             for (i=0; i < 16; i = i + 1) begin
                 for (j=0; j < 16; j = j + 1) begin
 
@@ -149,7 +149,7 @@ module lab5_1_tb();
         reg c_out_expected;
         begin
             $display("arithmetic_add_increment_test");
-            select = 1'h3;
+            select = 4'h3;
             for (i=0; i < 16; i = i + 1) begin
                 for (j=0; j < 16; j = j + 1) begin
 
@@ -179,7 +179,7 @@ module lab5_1_tb();
         reg c_out_expected;
         begin
             $display("arithmetic_1s_complement_subtract_test");
-            select = 1'h4;
+            select = 4'h4;
             for (i=0; i < 16; i = i + 1) begin
                 for (j=0; j < 16; j = j + 1) begin
 
@@ -209,7 +209,7 @@ module lab5_1_tb();
         reg c_out_expected;
         begin
             $display("arithmetic_2s_complement_subtract_test");
-            select = 1'h5;
+            select = 4'h5;
             for (i=0; i < 16; i = i + 1) begin
                 for (j=0; j < 16; j = j + 1) begin
 
@@ -239,7 +239,7 @@ module lab5_1_tb();
         reg c_out_expected;
         begin
             $display("arithmetic_decrement_test");
-            select = 1'h6;
+            select = 4'h6;
             for (i=0; i < 16; i = i + 1) begin
                 for (j=0; j < 16; j = j + 1) begin
 
@@ -269,7 +269,7 @@ module lab5_1_tb();
         reg c_out_expected;
         begin
             $display("arithmetic_decrement_transfer_test");
-            select = 1'h7;
+            select = 4'h7;
             for (i=0; i < 16; i = i + 1) begin
                 for (j=0; j < 16; j = j + 1) begin
 
@@ -315,7 +315,7 @@ module lab5_1_tb();
         reg [3:0] out_expected;
         begin
             $display("logic_and_test");
-            select = 1'h8;
+            select = 4'h8;
             for (i=0; i < 16; i = i + 1) begin
                 for (j=0; j < 16; j = j + 1) begin
 
@@ -343,7 +343,7 @@ module lab5_1_tb();
         reg [3:0] out_expected;
         begin
             $display("logic_or_test");
-            select = 1'h8;
+            select = 4'h9;
             for (i=0; i < 16; i = i + 1) begin
                 for (j=0; j < 16; j = j + 1) begin
 
@@ -371,7 +371,7 @@ module lab5_1_tb();
         reg [3:0] out_expected;
         begin
             $display("logic_xor_test");
-            select = 1'h8;
+            select = 4'ha;
             for (i=0; i < 16; i = i + 1) begin
                 for (j=0; j < 16; j = j + 1) begin
 
@@ -399,7 +399,7 @@ module lab5_1_tb();
         reg [3:0] out_expected;
         begin
             $display("logic_not_test");
-            select = 1'h8;
+            select = 4'hb;
             for (i=0; i < 16; i = i + 1) begin
                 for (j=0; j < 16; j = j + 1) begin
 

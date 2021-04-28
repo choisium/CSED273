@@ -5,7 +5,7 @@
 
 /* Implement srLatch */
 module srLatch(
-    input reset_n, s, r,
+    input s, r,
     output q, q_
     );
 
