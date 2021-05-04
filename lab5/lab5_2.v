@@ -23,8 +23,7 @@ module lab5_2(
     wire clk_, reset;
     wire j1, k1, j2, k2;
 
-    wire s_master, r_master, r_reset, p, p_;
-    wire s_slave, r_slave, r_reset2;
+    wire s_master, r_master, p, p_;
 
     not(clk_, clk);
     not(reset, reset_n);
