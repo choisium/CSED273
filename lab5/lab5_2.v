@@ -9,9 +9,8 @@ module srLatch(
     output q, q_
     );
 
-    ////////////////////////
-    /* Add your code here */
-    ////////////////////////
+    nor(q, r, q_);
+    nor(q_, s, q);
 
 endmodule
 
@@ -21,8 +20,36 @@ module lab5_2(
     output q, q_
     );
 
-    ////////////////////////
-    /* Add your code here */
-    ////////////////////////
+    wire clk_, reset;
+    wire j1, k1, j2, k2;
+
+    wire s_master, r_master, r_reset, p, p_;
+    wire s_slave, r_slave, r_reset2;
+
+    not(clk_, clk);
+    not(reset, reset_n);
+
+    and(s_master, j, q_, clk);
+    and(r_master, k, q, clk);
+
+    and(j1, reset_n, s_master);
+    or(k1, reset, r_master);
+
+    and(j2, p, clk_);
+    and(k2, p_, clk_);
+
+    srLatch MasterLatch(
+        .s(j1),
+        .r(k1),
+        .q(p),
+        .q_(p_)
+    );
+
+    srLatch slaveLatch(
+        .s(j2),
+        .r(k2),
+        .q(q),
+        .q_(q_)
+    );
     
 endmodule

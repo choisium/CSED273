@@ -28,10 +28,8 @@ module lab5_2_tb();
         clk = 0;
         
         /* Reset a flip-flop to initialize q and q_ */
-
-        ////////////////////////
-        /* Add your code here */
-        ////////////////////////
+        reset_n = 0;
+        #1 reset_n = 1;
 
         /* Test each j, k combinations */
         #10 j = 1; k = 0;
@@ -44,9 +42,13 @@ module lab5_2_tb();
          * Show both glitch mitigated with master-slave design
          * and glitch cannot be mitigated with master-slave design */
 
-        ////////////////////////
-        /* Add your code here */
-        ////////////////////////
+        // glitch during clk is low. mitigated
+        #10 j = 1; k = 1;
+        #1 j = 0; k = 0;
+
+        // glitch during clk is high. cannot be mitigated
+        #5 j = 1; k = 1;
+        #1 j = 0; k = 0;
 
         #20 $finish;
     end

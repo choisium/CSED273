@@ -94,10 +94,10 @@ module lab5_1_tb();
                 for (j=0; j < 16; j = j + 1) begin
 
                     /* Set module inputs and expected outputs*/
-
-                    ////////////////////////
-                    /* Add your code here */
-                    ////////////////////////
+                    x = i;
+                    y = j;
+                    out_expected = x + 1'b1;
+                    c_out_expected = i + 1 >= 16;
 
                     #1;
                     if (out === out_expected && c_out === c_out_expected) begin
@@ -124,10 +124,10 @@ module lab5_1_tb();
                 for (j=0; j < 16; j = j + 1) begin
 
                     /* Set module inputs and expected outputs*/
-                    
-                    ////////////////////////
-                    /* Add your code here */
-                    ////////////////////////
+                    x = i;
+                    y = j;
+                    out_expected = x + y;
+                    c_out_expected = i + j >= 16;
 
                     #1;
                     if (out === out_expected && c_out === c_out_expected) begin
@@ -154,10 +154,10 @@ module lab5_1_tb();
                 for (j=0; j < 16; j = j + 1) begin
 
                     /* Set module inputs and expected outputs*/
-                    
-                    ////////////////////////
-                    /* Add your code here */
-                    ////////////////////////
+                    x = i;
+                    y = j;
+                    out_expected = x + y + 1'b1;
+                    c_out_expected = i + j + 1 >= 16;
 
                     #1;
                     if (out === out_expected && c_out === c_out_expected) begin
@@ -184,10 +184,10 @@ module lab5_1_tb();
                 for (j=0; j < 16; j = j + 1) begin
 
                     /* Set module inputs and expected outputs*/
-                    
-                    ////////////////////////
-                    /* Add your code here */
-                    ////////////////////////
+                    x = i;
+                    y = j;
+                    out_expected = x + ~y;
+                    c_out_expected = x + ~y < 16;
 
                     #1;
                     if (out === out_expected && c_out === c_out_expected) begin
@@ -214,10 +214,10 @@ module lab5_1_tb();
                 for (j=0; j < 16; j = j + 1) begin
 
                     /* Set module inputs and expected outputs*/
-                    
-                    ////////////////////////
-                    /* Add your code here */
-                    ////////////////////////
+                    x = i;
+                    y = j;
+                    out_expected = x + ~y + 1'b1;
+                    c_out_expected = x + ~y + 1'b1 < 16;
 
                     #1;
                     if (out === out_expected && c_out === c_out_expected) begin
@@ -244,10 +244,10 @@ module lab5_1_tb();
                 for (j=0; j < 16; j = j + 1) begin
 
                     /* Set module inputs and expected outputs*/
-                    
-                    ////////////////////////
-                    /* Add your code here */
-                    ////////////////////////
+                    x = i;
+                    y = j;
+                    out_expected = x - 1'b1;
+                    c_out_expected = i > 0;
 
                     #1;
                     if (out === out_expected && c_out === c_out_expected) begin
@@ -274,10 +274,10 @@ module lab5_1_tb();
                 for (j=0; j < 16; j = j + 1) begin
 
                     /* Set module inputs and expected outputs*/
-                    
-                    ////////////////////////
-                    /* Add your code here */
-                    ////////////////////////
+                    x = i;
+                    y = j;
+                    out_expected = x;
+                    c_out_expected = 1'b1;
 
                     #1;
                     if (out === out_expected && c_out === c_out_expected) begin
@@ -320,10 +320,9 @@ module lab5_1_tb();
                 for (j=0; j < 16; j = j + 1) begin
 
                     /* Set module inputs and expected outputs*/
-                    
-                    ////////////////////////
-                    /* Add your code here */
-                    ////////////////////////
+                    x = i;
+                    y = j;
+                    out_expected = i & j;
 
                     #1;
                     if (out === out_expected) begin
@@ -348,10 +347,9 @@ module lab5_1_tb();
                 for (j=0; j < 16; j = j + 1) begin
 
                     /* Set module inputs and expected outputs*/
-                    
-                    ////////////////////////
-                    /* Add your code here */
-                    ////////////////////////
+                    x = i;
+                    y = j;
+                    out_expected = i | j;
 
                     #1;
                     if (out === out_expected) begin
@@ -376,10 +374,9 @@ module lab5_1_tb();
                 for (j=0; j < 16; j = j + 1) begin
 
                     /* Set module inputs and expected outputs*/
-                    
-                    ////////////////////////
-                    /* Add your code here */
-                    ////////////////////////
+                    x = i;
+                    y = j;
+                    out_expected = i ^ j;
 
                     #1;
                     if (out === out_expected) begin
@@ -404,10 +401,9 @@ module lab5_1_tb();
                 for (j=0; j < 16; j = j + 1) begin
 
                     /* Set module inputs and expected outputs*/
-                    
-                    ////////////////////////
-                    /* Add your code here */
-                    ////////////////////////
+                    x = i;
+                    y = j;
+                    out_expected = ~i;
 
                     #1;
                     if (out === out_expected) begin
