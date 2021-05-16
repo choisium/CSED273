@@ -7,8 +7,65 @@
  * You must use JK flip-flop of lab6_ff.v */
 module decade_counter(input reset_n, input clk, output [3:0] count);
 
-    ////////////////////////
-    /* Add your code here */
-    ////////////////////////
+    wire[3:0] count_;
+    wire[3:0] j, k, j_reset, k_reset;
+    wire reset;
+
+    // reset
+    not(reset, reset_n);
+    and(j_reset[3], reset_n, j[3]);
+    or(k_reset[3], reset, k[3]);
+    and(j_reset[2], reset_n, j[2]);
+    or(k_reset[2], reset, k[2]);
+    and(j_reset[1], reset_n, j[1]);
+    or(k_reset[1], reset, k[1]);
+    and(j_reset[0], reset_n, j[0]);
+    or(k_reset[0], reset, k[0]);
+
+    // compute j, k from count and count_
+    and(j[3], count[2], count[1], count[0]);
+    assign k[3] = count[0];
+    and(j[2], count[1], count[0]);
+    and(k[2], count[1], count[0]);
+    and(j[1], count_[3], count[0]);
+    assign k[1] = count[0];
+    assign j[0] = 1;
+    assign k[0] = 1;
+
+    edge_trigger_JKFF JKFF0(
+        .reset_n(reset_n),
+        .j(j[0]),
+        .k(k[0]),
+        .clk(clk),
+        .q(count[0]),
+        .q_(count_[0])
+    );
+
+    edge_trigger_JKFF JKFF1(
+        .reset_n(reset_n),
+        .j(j[1]),
+        .k(k[1]),
+        .clk(clk),
+        .q(count[1]),
+        .q_(count_[1])
+    );
+
+    edge_trigger_JKFF JKFF2(
+        .reset_n(reset_n),
+        .j(j[2]),
+        .k(k[2]),
+        .clk(clk),
+        .q(count[2]),
+        .q_(count_[2])
+    );
+
+    edge_trigger_JKFF JKFF3(
+        .reset_n(reset_n),
+        .j(j[3]),
+        .k(k[3]),
+        .clk(clk),
+        .q(count[3]),
+        .q_(count_[3])
+    );
 	
 endmodule

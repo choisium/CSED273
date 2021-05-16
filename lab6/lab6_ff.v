@@ -21,8 +21,16 @@ endmodule
  * You must use edge_trigger_JKFF module */
 module edge_trigger_D_FF(input reset_n, input d, input clk, output q, output q_);   
 
-    ////////////////////////
-    /* Add your code here */
-    ////////////////////////
+    wire d_;
+    not(d_, d);
+
+    edge_trigger_JKFF JKFF(
+        .reset_n(reset_n),
+        .j(d),
+        .k(d_),
+        .clk(clk),
+        .q(q),
+        .q_(q_)
+    );
  
 endmodule

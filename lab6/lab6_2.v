@@ -7,8 +7,21 @@
  * You must use decade BCD counter of lab6_1.v */
 module decade_counter_2digits(input reset_n, input clk, output [7:0] count);
 
-    ////////////////////////
-    /* Add your code here */
-    ////////////////////////
+    wire reset, reset_clk, clk2;
+    not(reset, reset_n);
+    and(reset_clk, reset, clk);
+    or(clk2, reset_clk, count[3]);
+
+    decade_counter DC0(
+        .reset_n(reset_n),
+        .clk(clk),
+        .count(count[3:0])
+    );
+
+    decade_counter DC1(
+        .reset_n(reset_n),
+        .clk(clk2),
+        .count(count[7:4])
+    );
 	
 endmodule
