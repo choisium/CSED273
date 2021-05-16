@@ -8,21 +8,9 @@
 module decade_counter(input reset_n, input clk, output [3:0] count);
 
     wire[3:0] count_;
-    wire[3:0] j, k, j_reset, k_reset;
+    wire[3:0] j, k;
     wire reset;
 
-    // reset
-    not(reset, reset_n);
-    and(j_reset[3], reset_n, j[3]);
-    or(k_reset[3], reset, k[3]);
-    and(j_reset[2], reset_n, j[2]);
-    or(k_reset[2], reset, k[2]);
-    and(j_reset[1], reset_n, j[1]);
-    or(k_reset[1], reset, k[1]);
-    and(j_reset[0], reset_n, j[0]);
-    or(k_reset[0], reset, k[0]);
-
-    // compute j, k from count and count_
     and(j[3], count[2], count[1], count[0]);
     assign k[3] = count[0];
     and(j[2], count[1], count[0]);

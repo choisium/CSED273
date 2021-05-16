@@ -8,19 +8,11 @@
  * then you use D flip-flop of lab6_ff.v */
 module counter_369(input reset_n, input clk, output [3:0] count);
 
-    wire[3:0] d, d_reset;
+    wire[3:0] d;
     wire[3:0] count_;
     wire q2q1, q3q2, q3_q2_, q3q2_;
     wire reset;
 
-    // reset
-    not(reset, reset_n);
-    and(d_reset[3], d[3], reset_n);
-    and(d_reset[2], d[2], reset_n);
-    or(d_reset[1], d[1], reset);
-    or(d_reset[0], d[0], reset);
-
-    // main
     and(q2q1, count[2], count[1]);
     and(q3q2, count[3], count[2]);
     and(q3_q2_, count_[3], count_[2]);
@@ -33,7 +25,7 @@ module counter_369(input reset_n, input clk, output [3:0] count);
 
     edge_trigger_D_FF DFF0(
         .reset_n(reset_n),
-        .d(d_reset[0]),
+        .d(d[0]),
         .clk(clk),
         .q(count[0]),
         .q_(count_[0])
@@ -41,7 +33,7 @@ module counter_369(input reset_n, input clk, output [3:0] count);
 
     edge_trigger_D_FF DFF1(
         .reset_n(reset_n),
-        .d(d_reset[1]),
+        .d(d[1]),
         .clk(clk),
         .q(count[1]),
         .q_(count_[1])
@@ -49,7 +41,7 @@ module counter_369(input reset_n, input clk, output [3:0] count);
 
     edge_trigger_D_FF DFF2(
         .reset_n(reset_n),
-        .d(d_reset[2]),
+        .d(d[2]),
         .clk(clk),
         .q(count[2]),
         .q_(count_[2])
@@ -57,7 +49,7 @@ module counter_369(input reset_n, input clk, output [3:0] count);
 
     edge_trigger_D_FF DFF3(
         .reset_n(reset_n),
-        .d(d_reset[3]),
+        .d(d[3]),
         .clk(clk),
         .q(count[3]),
         .q_(count_[3])
