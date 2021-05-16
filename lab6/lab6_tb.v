@@ -124,7 +124,7 @@ module lab6_tb();
             reset_n = 0;
             #15 reset_n = 1;
 
-            for (i = 0; i < 10; i = i + 1) begin
+            for (i = 0; i < 15; i = i + 1) begin
                 if (out3 == out_expected) begin
                     Passed = Passed + 1;
                 end
