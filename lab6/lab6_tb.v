@@ -57,7 +57,7 @@ module lab6_tb();
         reg[3:0] out_expected;
 
         begin
-            reset_n = 0;
+            #5 reset_n = 0;
             #10 reset_n = 1;
 
             for (i = 0; i < 15; i = i + 1) begin
@@ -87,7 +87,7 @@ module lab6_tb();
             upper_out_expected = 0;
 
             reset_n = 0;
-            #15 reset_n = 1;
+            #10 reset_n = 1;
 
             for (i = 0; i < 110; i = i + 1) begin
                 if (out2 == {upper_out_expected, lower_out_expected}) begin
@@ -122,7 +122,7 @@ module lab6_tb();
         begin
             out_expected = 0;
             reset_n = 0;
-            #15 reset_n = 1;
+            #10 reset_n = 1;
 
             for (i = 0; i < 15; i = i + 1) begin
                 if (out3 == out_expected) begin
