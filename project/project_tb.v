@@ -72,17 +72,6 @@ module project_tb;
         TestClk[3] <= 16'd3;  TestAnsPos[3] <= 3'b001;  TestAnsOpen[3] <= 0;    TestAnsDir[3] <= 2'b01; TestPassed[3] <= 1'bx;
     end
 
-	// reg [`TESTID_SIZE*8-1:0] TestID[`NUM_TEST-1:0];
-	// reg [5:0] TestNumClk [`NUM_TEST-1:0];
-	// reg [2:0] TestAnsPos[`NUM_TEST-1:0];
-	// reg TestAnsOpen [`NUM_TEST-1:0];
-	// reg [1:0] TestAnsDirection [`NUM_TEST-1:0];
-	// reg TestPassed [`NUM_TEST-1:0];	
-
-    // initial begin
-    //     TestID[0] = "1-1"; T
-    // end
-
 	integer i;
 	integer num_clock;
 		

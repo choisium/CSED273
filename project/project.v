@@ -14,20 +14,12 @@ module elevator(
 	output open;				// close: 0, open: 1
 	output [1:0] direction;		// stop: 00, up: 01, down: 10
 
-	wire [2:0] pos_cur, pos_nxt;
-	wire open_cur, open_nxt;
-	wire [1:0] dir_cur, dir_nxt;
-
-	edge_trigger_D_FF latch_pos0(reset_n, pos_nxt[0], clk, pos_cur[0], );
-	edge_trigger_D_FF latch_pos1(reset_n, pos_nxt[1], clk, pos_cur[1], );
-	edge_trigger_D_FF latch_pos2(reset_n, pos_nxt[2], clk, pos_cur[2], );
-	edge_trigger_D_FF latch_open0(reset_n, open_nxt, clk, open_cur, );
-	edge_trigger_D_FF latch_dir0(reset_n, dir_nxt[0], clk, dir_cur[0], );
-	edge_trigger_D_FF latch_dir1(reset_n, dir_nxt[1], clk, dir_cur[1], );
-
-	assign position = pos_cur;
-	assign open = open_cur;
-	assign direction = dir_cur;
+	edge_trigger_D_FF DFF_pos0(reset_n, pos_nxt[0], clk, position[0], );
+	edge_trigger_D_FF DFF_pos1(reset_n, pos_nxt[1], clk, position[1], );
+	edge_trigger_D_FF DFF_pos2(reset_n, pos_nxt[2], clk, position[2], );
+	edge_trigger_D_FF DFF_open0(reset_n, open_nxt, clk, open, );
+	edge_trigger_D_FF DFF_dir0(reset_n, dir_nxt[0], clk, direction[0], );
+	edge_trigger_D_FF DFF_dir1(reset_n, dir_nxt[1], clk, direction[1], );
 
 	wire [2:0] ctrl_button_up;		// [0]: i, [1]: >i, [2]: <i
 	wire [2:0] ctrl_button_down;	// [0]: i, [1]: >i, [2]: <i
@@ -37,6 +29,7 @@ module elevator(
 
 	button_module ButtonModule(button_up, button_down, button_in, position[2:1], ctrl_button_up, ctrl_button_down, ctrl_button_in);
 
+	// calculate next states from each states
 	wire [1:0] fsc_pos_nxt, fsc_dir_nxt;
 	wire fsc_open_nxt;
 	full_stop_close_controller FSC(ctrl_button_up, ctrl_button_down, ctrl_button_in, open, fsc_pos_nxt, fsc_open_nxt, fsc_dir_nxt);
@@ -65,8 +58,43 @@ module elevator(
 	wire h_open_nxt;
 	half_controller HC(ctrl_button_up, ctrl_button_down, ctrl_button_in, direction, h_pos_nxt, h_open_nxt, h_dir_nxt);
 
+	// select next state using mux
+	wire [1:0] fs_pos_nxt, fs_dir_nxt;
+	wire fs_open_nxt;
+	mux2to1 MUX_full_stop_pos0({fso_pos_nxt[0], fsc_pos_nxt[0]}, open, fs_pos_nxt[0]);
+	mux2to1 MUX_full_stop_pos1({fso_pos_nxt[1], fsc_pos_nxt[1]}, open, fs_pos_nxt[1]);
+	mux2to1 MUX_full_stop_dir0({fso_dir_nxt[0], fsc_dir_nxt[0]}, open, fs_dir_nxt[0]);
+	mux2to1 MUX_full_stop_dir1({fso_dir_nxt[1], fsc_dir_nxt[1]}, open, fs_dir_nxt[1]);
+	mux2to1 MUX_full_stop_open({fso_open_nxt, fsc_open_nxt}, open, fs_open_nxt);
 
-	controller Controller(button_up, button_down, button_in, pos_cur, pos_nxt, open_cur, open_nxt, dir_cur, dir_nxt);
+	wire [1:0] fu_pos_nxt, fu_dir_nxt;
+	wire fu_open_nxt;
+	mux2to1 MUX_full_up_pos0({fuo_pos_nxt[0], fuc_pos_nxt[0]}, open, fu_pos_nxt[0]);
+	mux2to1 MUX_full_up_pos1({fuo_pos_nxt[1], fuc_pos_nxt[1]}, open, fu_pos_nxt[1]);
+	mux2to1 MUX_full_up_dir0({fuo_dir_nxt[0], fuc_dir_nxt[0]}, open, fu_dir_nxt[0]);
+	mux2to1 MUX_full_up_dir1({fuo_dir_nxt[1], fuc_dir_nxt[1]}, open, fu_dir_nxt[1]);
+	mux2to1 MUX_full_up_open({fuo_open_nxt, fuc_open_nxt}, open, fu_open_nxt);
+
+	wire [1:0] fd_pos_nxt, fd_dir_nxt;
+	wire fd_open_nxt;
+	mux2to1 MUX_full_down_pos0({fdo_pos_nxt[0], fdc_pos_nxt[0]}, open, fd_pos_nxt[0]);
+	mux2to1 MUX_full_down_pos1({fdo_pos_nxt[1], fdc_pos_nxt[1]}, open, fd_pos_nxt[1]);
+	mux2to1 MUX_full_down_dir0({fdo_dir_nxt[0], fdc_dir_nxt[0]}, open, fd_dir_nxt[0]);
+	mux2to1 MUX_full_down_dir1({fdo_dir_nxt[1], fdc_dir_nxt[1]}, open, fd_dir_nxt[1]);
+	mux2to1 MUX_full_down_open({fdo_open_nxt, fdc_open_nxt}, open, fd_open_nxt);
+
+	wire [1:0] sel_state, ctrl_pos_nxt, dir_nxt;
+	wire open_nxt;
+	or(sel_state[0], direction[0], position[0]);
+	or(sel_state[1], direction[1], position[0]);
+	mux4to1 MUX_dir_nxt0({h_dir_nxt[0], fd_dir_nxt[0], fu_dir_nxt[0], fs_dir_nxt[0]}, sel_state, dir_nxt[0]);
+	mux4to1 MUX_dir_nxt1({h_dir_nxt[1], fd_dir_nxt[1], fu_dir_nxt[1], fs_dir_nxt[1]}, sel_state, dir_nxt[1]);
+	mux4to1 MUX_pos_nxt0({h_pos_nxt[0], fd_pos_nxt[0], fu_pos_nxt[0], fs_pos_nxt[0]}, sel_state, ctrl_pos_nxt[0]);
+	mux4to1 MUX_pos_nxt1({h_pos_nxt[1], fd_pos_nxt[1], fu_pos_nxt[1], fs_pos_nxt[1]}, sel_state, ctrl_pos_nxt[1]);
+	mux4to1 MUX_open({h_open_nxt, fd_open_nxt, fu_open_nxt, fs_open_nxt}, sel_state, open_nxt);
+
+	wire[2:0] pos_nxt;
+	adder Adder_direction(position, {3{ctrl_pos_nxt[1]}}, ctrl_pos_nxt[0], pos_nxt, );
 
 endmodule
 
@@ -121,54 +149,4 @@ module button_module(
 	mux4to1 MUX_IN1({1'b0, button_in[3], button_in_34, button_in_234}, position, ctrl_button_in[1]);
 	mux4to1 MUX_IN2({button_in_123, button_in_12, button_in[0], 1'b0}, position, ctrl_button_in[2]);
 
-endmodule
-
-module controller(
-	button_up, button_down, button_in,
-	pos_cur, pos_nxt, open_cur, open_nxt, dir_cur, dir_nxt
-);
-	input [2:0] button_up;
-	input [2:0] button_down;
-	input [3:0] button_in;
-	input [2:0] pos_cur;
-	input open_cur;
-	input [1:0] dir_cur;
-
-	output reg [2:0] pos_nxt;
-	output reg open_nxt;
-	output reg [1:0] dir_nxt;
-
-	wire [2:0] pos_cur_;
-	wire pos_open_;
-	wire [1:0] dir_cur_;
-
-	// not(pos_cur_[0], pos_cur_[0]); not(pos_cur_[1], pos_cur_[1]); not(pos_cur_[2], pos_cur_[2]);
-	// not(open_cur_, open_cur);
-	// not(dir_cur_[0], dir_cur[0]); not(dir_cur_[1], dir_cur[1]);
-
-	// assign pos_nxt = pos_cur;
-	// assign open_nxt = open_cur;
-	// assign dir_nxt = dir_cur;
-
-	always @(*) begin
-		if (pos_cur[0] == 0 && open_cur == 0 && dir_cur == 0) begin
-			if (button_up[0] == 1 || button_down[0] == 1) begin
-				pos_nxt = pos_cur;
-				open_nxt = 1;
-				dir_nxt = dir_cur;
-			end else begin
-				pos_nxt = pos_cur;
-				open_nxt = open_cur;
-				dir_nxt = dir_cur;
-			end
-		end else begin
-			pos_nxt = pos_cur;
-			open_nxt = open_cur;
-			dir_nxt = dir_cur;
-		end
-	end
-
-	
-	// select between half floor and full floor
-	
 endmodule

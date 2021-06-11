@@ -59,8 +59,7 @@ module full_stop_open_controller(
 
 	// compute next states
 	assign open_nxt = 1'b0;
-	and(pos_nxt[1], down);
-	and(pos_nxt[0], up);
+    assign pos_nxt = 2'b00;
 	and(dir_nxt[1], down);
 	and(dir_nxt[0], up);
 
