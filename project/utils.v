@@ -1,3 +1,21 @@
+/* JK latch */
+module JKLatch(input reset_n, input j, input k, output q, output q_);
+    wire s, r;
+    wire reset, s_final, r_final;
+
+    not(reset, reset_n);
+
+    and(s, j, q_);
+    and(r, k, q);
+
+    or(r_final, reset, r);
+    and(s_final, reset_n, s);
+
+    nor(q, r_final, q_);
+    nor(q_, s_final, q);
+
+endmodule
+
 /* Negative edge triggered JK flip-flop */
 module edge_trigger_JKFF(input reset_n, input j, input k, input clk, output reg q, output reg q_);  
     initial begin

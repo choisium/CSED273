@@ -14,6 +14,7 @@ module elevator(
 	output open;				// close: 0, open: 1
 	output [1:0] direction;		// stop: 00, up: 01, down: 10
 
+	// update position, open, direction at negative edge
 	edge_trigger_D_FF DFF_pos0(reset_n, pos_nxt[0], clk, position[0], );
 	edge_trigger_D_FF DFF_pos1(reset_n, pos_nxt[1], clk, position[1], );
 	edge_trigger_D_FF DFF_pos2(reset_n, pos_nxt[2], clk, position[2], );
@@ -21,13 +22,15 @@ module elevator(
 	edge_trigger_D_FF DFF_dir0(reset_n, dir_nxt[0], clk, direction[0], );
 	edge_trigger_D_FF DFF_dir1(reset_n, dir_nxt[1], clk, direction[1], );
 
+	// compute button for convenience
+	wire [3:0] reg_button_in;
+	button_in_module ButtonInModule(reset_n, clk, button_in, position[2:1], open, reg_button_in);
+
 	wire [2:0] ctrl_button_up;		// [0]: i, [1]: >i, [2]: <i
 	wire [2:0] ctrl_button_down;	// [0]: i, [1]: >i, [2]: <i
 	wire [2:0] ctrl_button_in;		// [0]: i, [1]: >i, [2]: <i
-
 	wire [2:0] ctrl_position;		// stay: 00, move up: 01, move down: 10
-
-	button_module ButtonModule(button_up, button_down, button_in, position[2:1], ctrl_button_up, ctrl_button_down, ctrl_button_in);
+	button_module ButtonModule(button_up, button_down, reg_button_in, position[2:1], ctrl_button_up, ctrl_button_down, ctrl_button_in);
 
 	// calculate next states from each states
 	wire [1:0] fsc_pos_nxt, fsc_dir_nxt;
@@ -98,55 +101,3 @@ module elevator(
 
 endmodule
 
-
-module button_module(
-	button_up, button_down, button_in, position,
-	ctrl_button_up, ctrl_button_down, ctrl_button_in
-);
-
-	input [2:0] button_up;
-	input [2:0] button_down;
-	input [3:0] button_in;
-	input [1:0] position;
-
-	output wire [2:0] ctrl_button_up;
-	output wire [2:0] ctrl_button_down;
-	output wire [2:0] ctrl_button_in;
-
-	wire button_up_12;
-	wire button_up_123;
-	wire button_up_23;
-	wire button_down_23;
-	wire button_down_34;
-	wire button_down_234;
-	wire button_in_12;
-	wire button_in_123;
-	wire button_in_34;
-	wire button_in_234;
-
-	or(button_up_12, button_up[0], button_up[1]);
-	or(button_up_123, button_up_12, button_up[2]);
-	or(button_up_23, button_up[2], button_up[1]);
-
-	or(button_down_23, button_down[1], button_down[2]);
-	or(button_down_34, button_down[2], button_down[3]);
-	or(button_down_234, button_down_34, button_down[1]);
-
-	or(button_in_12, button_in[0], button_in[1]);
-	or(button_in_123, button_in_12, button_in[2]);
-	or(button_in_34, button_in[2], button_in[3]);
-	or(button_in_234, button_in_34, button_in[1]);
-
-	mux4to1 MUX_UP0({1'b0, button_up}, position, ctrl_button_up[0]);
-	mux4to1 MUX_UP1({1'b0, 1'b0, button_up[1], button_up_23}, position, ctrl_button_up[1]);
-	mux4to1 MUX_UP2({button_up_123, button_up_12, button_up[0], 1'b0}, position, ctrl_button_up[2]);
-
-	mux4to1 MUX_DOWN0({button_down, 1'b0}, position, ctrl_button_down[0]);
-	mux4to1 MUX_DOWN1({button_down_234, button_down_34, button_down[3], 1'b0}, position, ctrl_button_down[1]);
-	mux4to1 MUX_DOWN2({button_down_23, button_down[1], 1'b0, 1'b0}, position, ctrl_button_down[2]);
-
-	mux4to1 MUX_IN0(button_in, position, ctrl_button_in[0]);
-	mux4to1 MUX_IN1({1'b0, button_in[3], button_in_34, button_in_234}, position, ctrl_button_in[1]);
-	mux4to1 MUX_IN2({button_in_123, button_in_12, button_in[0], 1'b0}, position, ctrl_button_in[2]);
-
-endmodule
