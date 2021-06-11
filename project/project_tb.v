@@ -63,13 +63,13 @@ module project_tb;
 
     initial begin
         TestID[0] <= "1-1";   TestBU[0] <= 3'b001;      TestBD[0] <= 3'b000;    TestBI[0] <= 4'b0000;
-        TestClk[0] <= 16'd1;  TestAnsPos[0] <= 3'b000;  TestAnsOpen[0] <= 0;    TestAnsDir[0] <= 2'b00; TestPassed[0] <= 1'bx;
+        TestClk[0] <= 16'd0;  TestAnsPos[0] <= 3'b000;  TestAnsOpen[0] <= 0;    TestAnsDir[0] <= 2'b00; TestPassed[0] <= 1'bx;
         TestID[1] <= "1-2";   TestBU[1] <= 3'b000;      TestBD[1] <= 3'b000;    TestBI[1] <= 4'b0100;
-        TestClk[1] <= 16'd2;  TestAnsPos[1] <= 3'b000;  TestAnsOpen[1] <= 1;    TestAnsDir[1] <= 2'b00; TestPassed[1] <= 1'bx;
+        TestClk[1] <= 16'd1;  TestAnsPos[1] <= 3'b000;  TestAnsOpen[1] <= 1;    TestAnsDir[1] <= 2'b00; TestPassed[1] <= 1'bx;
         TestID[2] <= "1-3";   TestBU[2] <= 3'b010;      TestBD[2] <= 3'b000;    TestBI[2] <= 4'b0000;
-        TestClk[2] <= 16'd3;  TestAnsPos[2] <= 3'b000;  TestAnsOpen[2] <= 0;    TestAnsDir[2] <= 2'b01; TestPassed[2] <= 1'bx;
+        TestClk[2] <= 16'd2;  TestAnsPos[2] <= 3'b000;  TestAnsOpen[2] <= 0;    TestAnsDir[2] <= 2'b01; TestPassed[2] <= 1'bx;
         TestID[3] <= "1-4";   TestBU[3] <= 3'b010;      TestBD[3] <= 3'b000;    TestBI[3] <= 4'b0000;
-        TestClk[3] <= 16'd4;  TestAnsPos[3] <= 3'b001;  TestAnsOpen[3] <= 0;    TestAnsDir[3] <= 2'b01; TestPassed[3] <= 1'bx;
+        TestClk[3] <= 16'd3;  TestAnsPos[3] <= 3'b001;  TestAnsOpen[3] <= 0;    TestAnsDir[3] <= 2'b01; TestPassed[3] <= 1'bx;
     end
 
 	// reg [`TESTID_SIZE*8-1:0] TestID[`NUM_TEST-1:0];
