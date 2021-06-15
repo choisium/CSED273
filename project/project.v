@@ -43,55 +43,55 @@ module elevator(
 	button_module ButtonModule(button_up, button_down, reg_button_in, pos_cur[2:1], ctrl_button_up, ctrl_button_down, ctrl_button_in);
 
 	// calculate next states from each states
-	wire [1:0] fsc_pos_nxt, fsc_dir_nxt;
+	wire [1:0] fsc_ctrl_pos_nxt, fsc_dir_nxt;
 	wire fsc_open_nxt;
-	full_stop_close_controller FSC(ctrl_button_up, ctrl_button_down, ctrl_button_in, fsc_pos_nxt, fsc_open_nxt, fsc_dir_nxt);
+	full_stop_close_controller FSC(ctrl_button_up, ctrl_button_down, ctrl_button_in, fsc_ctrl_pos_nxt, fsc_open_nxt, fsc_dir_nxt);
 
-	wire [1:0] fso_pos_nxt, fso_dir_nxt;
+	wire [1:0] fso_ctrl_pos_nxt, fso_dir_nxt;
 	wire fso_open_nxt;
-	full_stop_open_controller FSO(ctrl_button_up, ctrl_button_down, ctrl_button_in, fso_pos_nxt, fso_open_nxt, fso_dir_nxt);
+	full_stop_open_controller FSO(ctrl_button_up, ctrl_button_down, ctrl_button_in, fso_ctrl_pos_nxt, fso_open_nxt, fso_dir_nxt);
 
-	wire [1:0] fuc_pos_nxt, fuc_dir_nxt;
+	wire [1:0] fuc_ctrl_pos_nxt, fuc_dir_nxt;
 	wire fuc_open_nxt;
-	full_up_close_controller FUC(ctrl_button_up, ctrl_button_down, ctrl_button_in, fuc_pos_nxt, fuc_open_nxt, fuc_dir_nxt);
+	full_up_close_controller FUC(ctrl_button_up, ctrl_button_down, ctrl_button_in, fuc_ctrl_pos_nxt, fuc_open_nxt, fuc_dir_nxt);
 
-	wire [1:0] fuo_pos_nxt, fuo_dir_nxt;
+	wire [1:0] fuo_ctrl_pos_nxt, fuo_dir_nxt;
 	wire fuo_open_nxt;
-	full_up_open_controller FUO(ctrl_button_up, ctrl_button_down, ctrl_button_in, fuo_pos_nxt, fuo_open_nxt, fuo_dir_nxt);
+	full_up_open_controller FUO(ctrl_button_up, ctrl_button_down, ctrl_button_in, fuo_ctrl_pos_nxt, fuo_open_nxt, fuo_dir_nxt);
 
-	wire [1:0] fdc_pos_nxt, fdc_dir_nxt;
+	wire [1:0] fdc_ctrl_pos_nxt, fdc_dir_nxt;
 	wire fdc_open_nxt;
-	full_down_close_controller FDC(ctrl_button_up, ctrl_button_down, ctrl_button_in, fdc_pos_nxt, fdc_open_nxt, fdc_dir_nxt);
+	full_down_close_controller FDC(ctrl_button_up, ctrl_button_down, ctrl_button_in, fdc_ctrl_pos_nxt, fdc_open_nxt, fdc_dir_nxt);
 
-	wire [1:0] fdo_pos_nxt, fdo_dir_nxt;
+	wire [1:0] fdo_ctrl_pos_nxt, fdo_dir_nxt;
 	wire fdo_open_nxt;
-	full_down_open_controller FDO(ctrl_button_up, ctrl_button_down, ctrl_button_in, fdo_pos_nxt, fdo_open_nxt, fdo_dir_nxt);
+	full_down_open_controller FDO(ctrl_button_up, ctrl_button_down, ctrl_button_in, fdo_ctrl_pos_nxt, fdo_open_nxt, fdo_dir_nxt);
 
-	wire [1:0] h_pos_nxt, h_dir_nxt;
+	wire [1:0] h_ctrl_pos_nxt, h_dir_nxt;
 	wire h_open_nxt;
-	half_controller HC(ctrl_button_up, ctrl_button_down, ctrl_button_in, dir_cur, h_pos_nxt, h_open_nxt, h_dir_nxt);
+	half_controller HC(ctrl_button_up, ctrl_button_down, ctrl_button_in, dir_cur, h_ctrl_pos_nxt, h_open_nxt, h_dir_nxt);
 
 	// select next state using mux
-	wire [1:0] fs_pos_nxt, fs_dir_nxt;
+	wire [1:0] fs_ctrl_pos_nxt, fs_dir_nxt;
 	wire fs_open_nxt;
-	mux2to1 MUX_full_stop_pos0({fso_pos_nxt[0], fsc_pos_nxt[0]}, open_cur, fs_pos_nxt[0]);
-	mux2to1 MUX_full_stop_pos1({fso_pos_nxt[1], fsc_pos_nxt[1]}, open_cur, fs_pos_nxt[1]);
+	mux2to1 MUX_full_stop_pos0({fso_ctrl_pos_nxt[0], fsc_ctrl_pos_nxt[0]}, open_cur, fs_ctrl_pos_nxt[0]);
+	mux2to1 MUX_full_stop_pos1({fso_ctrl_pos_nxt[1], fsc_ctrl_pos_nxt[1]}, open_cur, fs_ctrl_pos_nxt[1]);
 	mux2to1 MUX_full_stop_dir0({fso_dir_nxt[0], fsc_dir_nxt[0]}, open_cur, fs_dir_nxt[0]);
 	mux2to1 MUX_full_stop_dir1({fso_dir_nxt[1], fsc_dir_nxt[1]}, open_cur, fs_dir_nxt[1]);
 	mux2to1 MUX_full_stop_open({fso_open_nxt, fsc_open_nxt}, open_cur, fs_open_nxt);
 
-	wire [1:0] fu_pos_nxt, fu_dir_nxt;
+	wire [1:0] fu_ctrl_pos_nxt, fu_dir_nxt;
 	wire fu_open_nxt;
-	mux2to1 MUX_full_up_pos0({fuo_pos_nxt[0], fuc_pos_nxt[0]}, open_cur, fu_pos_nxt[0]);
-	mux2to1 MUX_full_up_pos1({fuo_pos_nxt[1], fuc_pos_nxt[1]}, open_cur, fu_pos_nxt[1]);
+	mux2to1 MUX_full_up_pos0({fuo_ctrl_pos_nxt[0], fuc_ctrl_pos_nxt[0]}, open_cur, fu_ctrl_pos_nxt[0]);
+	mux2to1 MUX_full_up_pos1({fuo_ctrl_pos_nxt[1], fuc_ctrl_pos_nxt[1]}, open_cur, fu_ctrl_pos_nxt[1]);
 	mux2to1 MUX_full_up_dir0({fuo_dir_nxt[0], fuc_dir_nxt[0]}, open_cur, fu_dir_nxt[0]);
 	mux2to1 MUX_full_up_dir1({fuo_dir_nxt[1], fuc_dir_nxt[1]}, open_cur, fu_dir_nxt[1]);
 	mux2to1 MUX_full_up_open({fuo_open_nxt, fuc_open_nxt}, open_cur, fu_open_nxt);
 
-	wire [1:0] fd_pos_nxt, fd_dir_nxt;
+	wire [1:0] fd_ctrl_pos_nxt, fd_dir_nxt;
 	wire fd_open_nxt;
-	mux2to1 MUX_full_down_pos0({fdo_pos_nxt[0], fdc_pos_nxt[0]}, open_cur, fd_pos_nxt[0]);
-	mux2to1 MUX_full_down_pos1({fdo_pos_nxt[1], fdc_pos_nxt[1]}, open_cur, fd_pos_nxt[1]);
+	mux2to1 MUX_full_down_pos0({fdo_ctrl_pos_nxt[0], fdc_ctrl_pos_nxt[0]}, open_cur, fd_ctrl_pos_nxt[0]);
+	mux2to1 MUX_full_down_pos1({fdo_ctrl_pos_nxt[1], fdc_ctrl_pos_nxt[1]}, open_cur, fd_ctrl_pos_nxt[1]);
 	mux2to1 MUX_full_down_dir0({fdo_dir_nxt[0], fdc_dir_nxt[0]}, open_cur, fd_dir_nxt[0]);
 	mux2to1 MUX_full_down_dir1({fdo_dir_nxt[1], fdc_dir_nxt[1]}, open_cur, fd_dir_nxt[1]);
 	mux2to1 MUX_full_down_open({fdo_open_nxt, fdc_open_nxt}, open_cur, fd_open_nxt);
@@ -101,8 +101,8 @@ module elevator(
 	or(sel_state[1], dir_cur[1], pos_cur[0]);
 	mux4to1 MUX_dir_nxt0({h_dir_nxt[0], fd_dir_nxt[0], fu_dir_nxt[0], fs_dir_nxt[0]}, sel_state, dir_nxt[0]);
 	mux4to1 MUX_dir_nxt1({h_dir_nxt[1], fd_dir_nxt[1], fu_dir_nxt[1], fs_dir_nxt[1]}, sel_state, dir_nxt[1]);
-	mux4to1 MUX_pos_nxt0({h_pos_nxt[0], fd_pos_nxt[0], fu_pos_nxt[0], fs_pos_nxt[0]}, sel_state, ctrl_pos_nxt[0]);
-	mux4to1 MUX_pos_nxt1({h_pos_nxt[1], fd_pos_nxt[1], fu_pos_nxt[1], fs_pos_nxt[1]}, sel_state, ctrl_pos_nxt[1]);
+	mux4to1 MUX_pos_nxt0({h_ctrl_pos_nxt[0], fd_ctrl_pos_nxt[0], fu_ctrl_pos_nxt[0], fs_ctrl_pos_nxt[0]}, sel_state, ctrl_pos_nxt[0]);
+	mux4to1 MUX_pos_nxt1({h_ctrl_pos_nxt[1], fd_ctrl_pos_nxt[1], fu_ctrl_pos_nxt[1], fs_ctrl_pos_nxt[1]}, sel_state, ctrl_pos_nxt[1]);
 	mux4to1 MUX_open({h_open_nxt, fd_open_nxt, fu_open_nxt, fs_open_nxt}, sel_state, open_nxt);
 
 	// calculate next position from ctrl_pos_nxt value
