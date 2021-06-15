@@ -17,8 +17,11 @@ module project_tb;
     wire open;
     wire [1:0] direction;
 
-    event testbench_finish;
-    initial #(`PERIOD*10000) -> testbench_finish; // only 10,000 cycles are allowed.
+    reg testbench_finish;
+    initial begin
+        testbench_finish = 0;
+        #(`PERIOD*10000) testbench_finish = 1; // only 10,000 cycles are allowed
+    end
 
     elevator Elevator(
         .clk(clk),
@@ -62,6 +65,7 @@ module project_tb;
 	reg TestPassed [`NUM_TEST-1:0];         // check passed or not
 
     initial begin
+        // scenario 1 - inputs
         TestID[0] <= "1-0";   TestBU[0] <= 3'b001;      TestBD[0] <= 3'b000;    TestBI[0] <= 4'b0000;
         TestID[1] <= "1-1";   TestBU[1] <= 3'b000;      TestBD[1] <= 3'b000;    TestBI[1] <= 4'b1000;
         TestID[2] <= "1-2";   TestBU[2] <= 3'b010;      TestBD[2] <= 3'b000;    TestBI[2] <= 4'b0000;
@@ -85,6 +89,7 @@ module project_tb;
         TestID[20] <= "1-20";   TestBU[20] <= 3'b000;      TestBD[20] <= 3'b000;    TestBI[20] <= 4'b0000;
         TestID[21] <= "1-21";   TestBU[21] <= 3'b000;      TestBD[21] <= 3'b000;    TestBI[21] <= 4'b0000;
 
+        // scenario 2 - inputs
         TestID[22] <= "2-22";   TestBU[22] <= 3'b000;      TestBD[22] <= 3'b010;    TestBI[22] <= 4'b0000;
         TestID[23] <= "2-23";   TestBU[23] <= 3'b000;      TestBD[23] <= 3'b110;    TestBI[23] <= 4'b0000;
         TestID[24] <= "2-24";   TestBU[24] <= 3'b000;      TestBD[24] <= 3'b110;    TestBI[24] <= 4'b0000;
@@ -103,6 +108,7 @@ module project_tb;
         TestID[37] <= "2-37";   TestBU[37] <= 3'b000;      TestBD[37] <= 3'b000;    TestBI[37] <= 4'b0000;
         TestID[38] <= "2-38";   TestBU[38] <= 3'b000;      TestBD[38] <= 3'b000;    TestBI[38] <= 4'b0000;
 
+        // scenario 3 - inputs
         TestID[39] <= "3-39";   TestBU[39] <= 3'b000;      TestBD[39] <= 3'b001;    TestBI[39] <= 4'b0000;
         TestID[40] <= "3-40";   TestBU[40] <= 3'b000;      TestBD[40] <= 3'b001;    TestBI[40] <= 4'b0000;
         TestID[41] <= "3-41";   TestBU[41] <= 3'b000;      TestBD[41] <= 3'b001;    TestBI[41] <= 4'b0000;
@@ -127,6 +133,7 @@ module project_tb;
     end
 
     initial begin
+        // scenario 1 - outputs
         TestClk[0] <= 16'd1;  TestAnsPos[0] <= 3'b000;  TestAnsOpen[0] <= 0;    TestAnsDir[0] <= 2'b00; TestPassed[0] <= 1'bx;
         TestClk[1] <= 16'd2;  TestAnsPos[1] <= 3'b000;  TestAnsOpen[1] <= 1;    TestAnsDir[1] <= 2'b00; TestPassed[1] <= 1'bx;
         TestClk[2] <= 16'd3;  TestAnsPos[2] <= 3'b000;  TestAnsOpen[2] <= 0;    TestAnsDir[2] <= 2'b01; TestPassed[2] <= 1'bx;
@@ -150,6 +157,7 @@ module project_tb;
         TestClk[20] <= 16'd21;  TestAnsPos[20] <= 3'b010;  TestAnsOpen[20] <= 0;    TestAnsDir[20] <= 2'b00; TestPassed[20] <= 1'bx;
         TestClk[21] <= 16'd22;  TestAnsPos[21] <= 3'b010;  TestAnsOpen[21] <= 0;    TestAnsDir[21] <= 2'b00; TestPassed[21] <= 1'bx;
 
+        // scenario 2 - outputs
         TestClk[22] <= 16'd23;  TestAnsPos[22] <= 3'b010;  TestAnsOpen[22] <= 0;    TestAnsDir[22] <= 2'b00; TestPassed[22] <= 1'bx;
         TestClk[23] <= 16'd24;  TestAnsPos[23] <= 3'b011;  TestAnsOpen[23] <= 0;    TestAnsDir[23] <= 2'b01; TestPassed[23] <= 1'bx;
         TestClk[24] <= 16'd25;  TestAnsPos[24] <= 3'b100;  TestAnsOpen[24] <= 0;    TestAnsDir[24] <= 2'b01; TestPassed[24] <= 1'bx;
@@ -168,6 +176,7 @@ module project_tb;
         TestClk[37] <= 16'd38;  TestAnsPos[37] <= 3'b000;  TestAnsOpen[37] <= 1;    TestAnsDir[37] <= 2'b10; TestPassed[37] <= 1'bx;
         TestClk[38] <= 16'd39;  TestAnsPos[38] <= 3'b000;  TestAnsOpen[38] <= 0;    TestAnsDir[38] <= 2'b00; TestPassed[38] <= 1'bx;
 
+        // scenario 3 - outputs
         TestClk[39] <= 16'd40;  TestAnsPos[39] <= 3'b000;  TestAnsOpen[39] <= 0;    TestAnsDir[39] <= 2'b00; TestPassed[39] <= 1'bx;
         TestClk[40] <= 16'd41;  TestAnsPos[40] <= 3'b001;  TestAnsOpen[40] <= 0;    TestAnsDir[40] <= 2'b01; TestPassed[40] <= 1'bx;
         TestClk[41] <= 16'd42;  TestAnsPos[41] <= 3'b010;  TestAnsOpen[41] <= 0;    TestAnsDir[41] <= 2'b01; TestPassed[41] <= 1'bx;
@@ -215,13 +224,13 @@ module project_tb;
 						TestPassed[i] <= 1'b0;
 						$display("Test #%s has been failed!", TestID[i]);
 						$display("position = 0x%0x (Ans : 0x%0x), open = 0x%0x (Ans : 0x%0x), direction = 0x%0x (Ans : 0x%0x)", position, TestAnsPos[i], open, TestAnsOpen[i], direction, TestAnsDir[i]);
-						-> testbench_finish;
+						testbench_finish = 1;
 					end
 				end
 			end
             if (num_clock == `NUM_TEST + 1) begin
                 $display("Test finished!");
-                -> testbench_finish;
+                testbench_finish = 1;
             end
 		end
 	end
@@ -230,19 +239,21 @@ module project_tb;
     initial Passed <= 0;
 
     always @(testbench_finish) begin
-		$display("Clock #%d", num_clock);
-		$display("The testbench is finished. Summarizing...");
-		for(i=0; i<`NUM_TEST; i=i+1) begin
-			if (TestPassed[i] == 1)
-				Passed=Passed+1;
-			else									   
-				$display("Test #%s : %s", TestID[i], (TestPassed[i] === 0)?"Wrong" : "No Result");
-		end
-		if (Passed == `NUM_TEST)
-			$display("All Pass!");
-		else
-			$display("Pass : %0d/%0d", Passed, `NUM_TEST);
-		$finish;
+        if (testbench_finish) begin
+            $display("Clock #%d", num_clock);
+            $display("The testbench is finished. Summarizing...");
+            for(i=0; i<`NUM_TEST; i=i+1) begin
+                if (TestPassed[i] == 1)
+                    Passed=Passed+1;
+                else
+                    $display("Test #%s : %s", TestID[i], (TestPassed[i] === 0)?"Wrong" : "No Result");
+            end
+            if (Passed == `NUM_TEST)
+                $display("All Pass!");
+            else
+                $display("Pass : %0d/%0d", Passed, `NUM_TEST);
+            $finish;
+        end
 	end
 
 
