@@ -77,7 +77,7 @@ module mux4to1(
 
 endmodule
 
-/* 3-bit adder */
+/* 3-bit carry-lookahead adder */
 module adder(
     input [2:0] x,
     input [2:0] y,

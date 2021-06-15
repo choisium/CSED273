@@ -5,8 +5,8 @@
 `define TESTID_SIZE 5
 
 module project_tb;
-	
-    //Internal signals declarations:
+
+    // internal signals declarations
     reg clk;
     reg reset_n;
 
@@ -18,7 +18,7 @@ module project_tb;
     wire [1:0] direction;
 
     event testbench_finish;
-    initial #(`PERIOD*10000) -> testbench_finish; // Only 10,000 cycles are allowed.
+    initial #(`PERIOD*10000) -> testbench_finish; // only 10,000 cycles are allowed.
 
     elevator Elevator(
         .clk(clk),
@@ -39,27 +39,27 @@ module project_tb;
 		$dumpfile("wave.vcd");
         $dumpvars(0, project_tb);
 
-        // Initialize input signals
+        // initialize input signals
         button_up = 0;
         button_down = 0;
         button_in = 0;
 
-        // Reset the device
+        // reset the device
         reset_n = 1;
         #(`PERIOD/4) reset_n = 0;
         #(`PERIOD + `PERIOD/2) reset_n = 1;
     end
 
     reg [`TESTID_SIZE*8-1:0] TestID [`NUM_TEST-1:0];
-    reg [2:0] TestBU [`NUM_TEST-1:0];
-    reg [2:0] TestBD [`NUM_TEST-1:0];
-    reg [3:0] TestBI [`NUM_TEST-1:0];
+    reg [2:0] TestBU [`NUM_TEST-1:0];   // button up value
+    reg [2:0] TestBD [`NUM_TEST-1:0];   // button down value
+    reg [3:0] TestBI [`NUM_TEST-1:0];   // button in value
     
-    reg [15:0] TestClk [`NUM_TEST-1:0];
-    reg [2:0] TestAnsPos [`NUM_TEST-1:0];
-    reg TestAnsOpen [`NUM_TEST-1:0];
-    reg [1:0] TestAnsDir [`NUM_TEST-1:0];
-	reg TestPassed [`NUM_TEST-1:0];
+    reg [15:0] TestClk [`NUM_TEST-1:0];     // clock for test
+    reg [2:0] TestAnsPos [`NUM_TEST-1:0];   // answer position value
+    reg TestAnsOpen [`NUM_TEST-1:0];        // answer open value
+    reg [1:0] TestAnsDir [`NUM_TEST-1:0];   // answer direction value
+	reg TestPassed [`NUM_TEST-1:0];         // check passed or not
 
     initial begin
         TestID[0] <= "1-0";   TestBU[0] <= 3'b001;      TestBD[0] <= 3'b000;    TestBI[0] <= 4'b0000;
@@ -198,8 +198,10 @@ module project_tb;
         if (!reset_n) begin
             num_clock = 0;
         end else begin
+            // update num_clock
 			num_clock <= num_clock + 1;
 
+            // set next inputs
             button_up <= TestBU[num_clock];
             button_down <= TestBD[num_clock];
             button_in <= TestBI[num_clock];

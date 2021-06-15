@@ -19,11 +19,12 @@ module elevator(
 	wire open_cur, open_nxt;
 	wire [1:0] dir_cur, dir_nxt;
 
-	// update position, open, direction
+	// set output as current states
 	assign position = pos_cur;
 	assign open = open_cur;
 	assign direction = dir_cur;
 
+	// state registers
 	edge_trigger_D_FF DFF_pos0(reset_n, pos_nxt[0], ~clk, pos_cur[0], );
 	edge_trigger_D_FF DFF_pos1(reset_n, pos_nxt[1], ~clk, pos_cur[1], );
 	edge_trigger_D_FF DFF_pos2(reset_n, pos_nxt[2], ~clk, pos_cur[2], );
@@ -31,16 +32,15 @@ module elevator(
 	edge_trigger_D_FF DFF_dir0(reset_n, dir_nxt[0], ~clk, dir_cur[0], );
 	edge_trigger_D_FF DFF_dir1(reset_n, dir_nxt[1], ~clk, dir_cur[1], );
 
-	// compute button for convenience
+	// update reg_button_in using current input
 	wire [3:0] reg_button_in;
 	reg_button_in_module RegButtonInModule(reset_n, button_in, pos_cur[2:1], open_cur, reg_button_in);
 
-
+	// compute ctrl_button for convenience
 	wire [2:0] ctrl_button_up;		// [0]: i, [1]: >i, [2]: <i
 	wire [2:0] ctrl_button_down;	// [0]: i, [1]: >i, [2]: <i
 	wire [2:0] ctrl_button_in;		// [0]: i, [1]: >i, [2]: <i
-	wire [2:0] ctrl_position;		// stay: 00, move up: 01, move down: 10
-	button_module ButtonModule(button_up, button_down, reg_button_in, pos_cur[2:1], ctrl_button_up, ctrl_button_down, ctrl_button_in);
+	ctrl_button_module ButtonModule(button_up, button_down, reg_button_in, pos_cur[2:1], ctrl_button_up, ctrl_button_down, ctrl_button_in);
 
 	// calculate next states from each states
 	wire [1:0] fsc_ctrl_pos_nxt, fsc_dir_nxt;
@@ -96,7 +96,8 @@ module elevator(
 	mux2to1 MUX_full_down_dir1({fdo_dir_nxt[1], fdc_dir_nxt[1]}, open_cur, fd_dir_nxt[1]);
 	mux2to1 MUX_full_down_open({fdo_open_nxt, fdc_open_nxt}, open_cur, fd_open_nxt);
 
-	wire [1:0] sel_state, ctrl_pos_nxt;
+	wire [1:0] sel_state;		// full_stop: 00, full_up: 01, full_down: 10, half: 11
+	wire [1:0] ctrl_pos_nxt;	// stay: 00, move up: 01, move down: 10
 	or(sel_state[0], dir_cur[0], pos_cur[0]);
 	or(sel_state[1], dir_cur[1], pos_cur[0]);
 	mux4to1 MUX_dir_nxt0({h_dir_nxt[0], fd_dir_nxt[0], fu_dir_nxt[0], fs_dir_nxt[0]}, sel_state, dir_nxt[0]);
@@ -105,7 +106,7 @@ module elevator(
 	mux4to1 MUX_pos_nxt1({h_ctrl_pos_nxt[1], fd_ctrl_pos_nxt[1], fu_ctrl_pos_nxt[1], fs_ctrl_pos_nxt[1]}, sel_state, ctrl_pos_nxt[1]);
 	mux4to1 MUX_open({h_open_nxt, fd_open_nxt, fu_open_nxt, fs_open_nxt}, sel_state, open_nxt);
 
-	// calculate next position from ctrl_pos_nxt value
+	// calculate next position using ctrl_pos_nxt value
 	adder Adder_position(pos_cur, {3{ctrl_pos_nxt[1]}}, ctrl_pos_nxt[0], pos_nxt, );
 
 endmodule
