@@ -51,11 +51,11 @@ module button_module(
 
 endmodule
 
-module button_in_module(
-    reset_n, clk, button_in, pos, open,
+module reg_button_in_module(
+    reset_n, button_in, pos, open,
     reg_button_in
 );
-    input reset_n, clk;
+    input reset_n;
     input [3:0] button_in;
     input [1:0] pos;
     input open;

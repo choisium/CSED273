@@ -14,25 +14,27 @@ module elevator(
 	output open;				// close: 0, open: 1
 	output [1:0] direction;		// stop: 00, up: 01, down: 10
 
+	// states
 	wire[2:0] pos_cur, pos_nxt;
 	wire open_cur, open_nxt;
 	wire [1:0] dir_cur, dir_nxt;
 
 	// update position, open, direction
-	assign position = pos_nxt;
-	assign open = open_nxt;
-	assign direction = dir_nxt;
+	assign position = pos_cur;
+	assign open = open_cur;
+	assign direction = dir_cur;
 
-	edge_trigger_D_FF DFF_pos0(reset_n, position[0], ~clk, pos_cur[0], );
-	edge_trigger_D_FF DFF_pos1(reset_n, position[1], ~clk, pos_cur[1], );
-	edge_trigger_D_FF DFF_pos2(reset_n, position[2], ~clk, pos_cur[2], );
-	edge_trigger_D_FF DFF_open0(reset_n, open, ~clk, open_cur, );
-	edge_trigger_D_FF DFF_dir0(reset_n, direction[0], ~clk, dir_cur[0], );
-	edge_trigger_D_FF DFF_dir1(reset_n, direction[1], ~clk, dir_cur[1], );
+	edge_trigger_D_FF DFF_pos0(reset_n, pos_nxt[0], ~clk, pos_cur[0], );
+	edge_trigger_D_FF DFF_pos1(reset_n, pos_nxt[1], ~clk, pos_cur[1], );
+	edge_trigger_D_FF DFF_pos2(reset_n, pos_nxt[2], ~clk, pos_cur[2], );
+	edge_trigger_D_FF DFF_open0(reset_n, open_nxt, ~clk, open_cur, );
+	edge_trigger_D_FF DFF_dir0(reset_n, dir_nxt[0], ~clk, dir_cur[0], );
+	edge_trigger_D_FF DFF_dir1(reset_n, dir_nxt[1], ~clk, dir_cur[1], );
 
 	// compute button for convenience
 	wire [3:0] reg_button_in;
-	button_in_module ButtonInModule(reset_n, clk, button_in, pos_cur[2:1], open_cur, reg_button_in);
+	reg_button_in_module RegButtonInModule(reset_n, button_in, pos_cur[2:1], open_cur, reg_button_in);
+
 
 	wire [2:0] ctrl_button_up;		// [0]: i, [1]: >i, [2]: <i
 	wire [2:0] ctrl_button_down;	// [0]: i, [1]: >i, [2]: <i
@@ -43,27 +45,27 @@ module elevator(
 	// calculate next states from each states
 	wire [1:0] fsc_pos_nxt, fsc_dir_nxt;
 	wire fsc_open_nxt;
-	full_stop_close_controller FSC(ctrl_button_up, ctrl_button_down, ctrl_button_in, open_cur, fsc_pos_nxt, fsc_open_nxt, fsc_dir_nxt);
+	full_stop_close_controller FSC(ctrl_button_up, ctrl_button_down, ctrl_button_in, fsc_pos_nxt, fsc_open_nxt, fsc_dir_nxt);
 
 	wire [1:0] fso_pos_nxt, fso_dir_nxt;
 	wire fso_open_nxt;
-	full_stop_open_controller FSO(ctrl_button_up, ctrl_button_down, ctrl_button_in, open_cur, fso_pos_nxt, fso_open_nxt, fso_dir_nxt);
+	full_stop_open_controller FSO(ctrl_button_up, ctrl_button_down, ctrl_button_in, fso_pos_nxt, fso_open_nxt, fso_dir_nxt);
 
 	wire [1:0] fuc_pos_nxt, fuc_dir_nxt;
 	wire fuc_open_nxt;
-	full_up_close_controller FUC(ctrl_button_up, ctrl_button_down, ctrl_button_in, open_cur, fuc_pos_nxt, fuc_open_nxt, fuc_dir_nxt);
+	full_up_close_controller FUC(ctrl_button_up, ctrl_button_down, ctrl_button_in, fuc_pos_nxt, fuc_open_nxt, fuc_dir_nxt);
 
 	wire [1:0] fuo_pos_nxt, fuo_dir_nxt;
 	wire fuo_open_nxt;
-	full_up_open_controller FUO(ctrl_button_up, ctrl_button_down, ctrl_button_in, open_cur, fuo_pos_nxt, fuo_open_nxt, fuo_dir_nxt);
+	full_up_open_controller FUO(ctrl_button_up, ctrl_button_down, ctrl_button_in, fuo_pos_nxt, fuo_open_nxt, fuo_dir_nxt);
 
 	wire [1:0] fdc_pos_nxt, fdc_dir_nxt;
 	wire fdc_open_nxt;
-	full_down_close_controller FDC(ctrl_button_up, ctrl_button_down, ctrl_button_in, open_cur, fdc_pos_nxt, fdc_open_nxt, fdc_dir_nxt);
+	full_down_close_controller FDC(ctrl_button_up, ctrl_button_down, ctrl_button_in, fdc_pos_nxt, fdc_open_nxt, fdc_dir_nxt);
 
 	wire [1:0] fdo_pos_nxt, fdo_dir_nxt;
 	wire fdo_open_nxt;
-	full_down_open_controller FDO(ctrl_button_up, ctrl_button_down, ctrl_button_in, open_cur, fdo_pos_nxt, fdo_open_nxt, fdo_dir_nxt);
+	full_down_open_controller FDO(ctrl_button_up, ctrl_button_down, ctrl_button_in, fdo_pos_nxt, fdo_open_nxt, fdo_dir_nxt);
 
 	wire [1:0] h_pos_nxt, h_dir_nxt;
 	wire h_open_nxt;
@@ -103,6 +105,7 @@ module elevator(
 	mux4to1 MUX_pos_nxt1({h_pos_nxt[1], fd_pos_nxt[1], fu_pos_nxt[1], fs_pos_nxt[1]}, sel_state, ctrl_pos_nxt[1]);
 	mux4to1 MUX_open({h_open_nxt, fd_open_nxt, fu_open_nxt, fs_open_nxt}, sel_state, open_nxt);
 
+	// calculate next position from ctrl_pos_nxt value
 	adder Adder_position(pos_cur, {3{ctrl_pos_nxt[1]}}, ctrl_pos_nxt[0], pos_nxt, );
 
 endmodule

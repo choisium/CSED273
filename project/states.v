@@ -1,11 +1,10 @@
 module full_stop_close_controller(
-	button_up, button_down, button_in, open_cur,
+	button_up, button_down, button_in,
 	pos_nxt, open_nxt, dir_nxt
 );
 	input [2:0] button_up;
 	input [2:0] button_down;
 	input [2:0] button_in;
-	input open_cur;
 
 	output [1:0] pos_nxt;
 	output open_nxt;
@@ -34,13 +33,12 @@ module full_stop_close_controller(
 endmodule
 
 module full_stop_open_controller(
-	button_up, button_down, button_in, open_cur,
+	button_up, button_down, button_in,
 	pos_nxt, open_nxt, dir_nxt
 );
 	input [2:0] button_up;
 	input [2:0] button_down;
 	input [2:0] button_in;
-	input open_cur;
 
 	output [1:0] pos_nxt;
 	output open_nxt;
@@ -66,13 +64,12 @@ module full_stop_open_controller(
 endmodule
 
 module full_up_close_controller(
-	button_up, button_down, button_in, open_cur,
+	button_up, button_down, button_in,
 	pos_nxt, open_nxt, dir_nxt
 );
 	input [2:0] button_up;
 	input [2:0] button_down;
 	input [2:0] button_in;
-	input open_cur;
 
 	output [1:0] pos_nxt;
 	output open_nxt;
@@ -109,13 +106,12 @@ endmodule
 
 
 module full_up_open_controller(
-	button_up, button_down, button_in, open_cur,
+	button_up, button_down, button_in,
 	pos_nxt, open_nxt, dir_nxt
 );
 	input [2:0] button_up;
 	input [2:0] button_down;
 	input [2:0] button_in;
-	input open_cur;
 
 	output [1:0] pos_nxt;
 	output open_nxt;
@@ -145,13 +141,12 @@ endmodule
 
 
 module full_down_close_controller(
-	button_up, button_down, button_in, open_cur,
+	button_up, button_down, button_in,
 	pos_nxt, open_nxt, dir_nxt
 );
 	input [2:0] button_up;
 	input [2:0] button_down;
 	input [2:0] button_in;
-	input open_cur;
 
 	output [1:0] pos_nxt;
 	output open_nxt;
@@ -188,13 +183,12 @@ endmodule
 
 
 module full_down_open_controller(
-	button_up, button_down, button_in, open_cur,
+	button_up, button_down, button_in,
 	pos_nxt, open_nxt, dir_nxt
 );
 	input [2:0] button_up;
 	input [2:0] button_down;
 	input [2:0] button_in;
-	input open_cur;
 
 	output [1:0] pos_nxt;
 	output open_nxt;
