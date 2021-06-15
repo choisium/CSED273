@@ -97,7 +97,7 @@ module full_up_close_controller(
     or(open, button_in[0], button_up[0], open_down);
 
     or(up_or, button_in[1], button_up[1], button_down[1]);
-    and(up, button_in_n[0], button_up_n[0]);
+    and(up, button_in_n[0], button_up_n[0], up_or);
 
 	// compute next states
 	assign open_nxt = open;
@@ -121,14 +121,17 @@ module full_up_open_controller(
 	output open_nxt;
 	output [1:0] dir_nxt;
 
-    wire up, down, down_or;
+    wire up, up_or, down, down_or;
     wire up_n;
+    wire button_in_2_n;
 
 	// not values
 	not(up_n, up);
+    not(button_in_2_n, button_in[2]);
 	
 	// check the branching conditions
-    or(up, button_in[1], button_up[1], button_down[1]);
+    or(up_or, button_in[1], button_up[1], button_down[1]);
+    and(up, button_in_2_n, up_or);
     or(down_or, button_in[2], button_up[2], button_down[2]);
     and(down, up_n, down_or);
 
@@ -173,7 +176,7 @@ module full_down_close_controller(
     or(open, button_in[0], button_down[0], open_up);
 
     or(down_or, button_in[2], button_up[2], button_down[2]);
-    and(down, button_in_n[0], button_down_n[0]);
+    and(down, button_in_n[0], button_down_n[0], down_or);
 
 	// compute next states
 	assign open_nxt = open;
@@ -197,14 +200,17 @@ module full_down_open_controller(
 	output open_nxt;
 	output [1:0] dir_nxt;
 
-    wire down, up, up_or;
+    wire down, down_or, up, up_or;
     wire down_n;
+    wire button_in_1_n;
 
 	// not values
 	not(down_n, down);
+    not(button_in_1_n, button_in[1]);
 	
 	// check the branching conditions
-    or(down, button_in[2], button_up[2], button_down[2]);
+    or(down_or, button_in[2], button_up[2], button_down[2]);
+    and(down, button_in_1_n, down_or);
     or(up_or, button_in[1], button_up[1], button_down[1]);
     and(up, down_n, up_or);
 

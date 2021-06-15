@@ -38,12 +38,12 @@ module button_module(
 	or(button_in_234, button_in_34, button_in[1]);
 
 	mux4to1 MUX_UP0({1'b0, button_up}, position, ctrl_button_up[0]);
-	mux4to1 MUX_UP1({1'b0, 1'b0, button_up[1], button_up_23}, position, ctrl_button_up[1]);
+	mux4to1 MUX_UP1({1'b0, 1'b0, button_up[2], button_up_23}, position, ctrl_button_up[1]);
 	mux4to1 MUX_UP2({button_up_123, button_up_12, button_up[0], 1'b0}, position, ctrl_button_up[2]);
 
 	mux4to1 MUX_DOWN0({button_down, 1'b0}, position, ctrl_button_down[0]);
-	mux4to1 MUX_DOWN1({button_down_234, button_down_34, button_down[3], 1'b0}, position, ctrl_button_down[1]);
-	mux4to1 MUX_DOWN2({button_down_23, button_down[1], 1'b0, 1'b0}, position, ctrl_button_down[2]);
+	mux4to1 MUX_DOWN1({1'b0, button_down[2], button_down_34, button_down_234}, position, ctrl_button_down[1]);
+	mux4to1 MUX_DOWN2({button_down_23, button_down[0], 1'b0, 1'b0}, position, ctrl_button_down[2]);
 
 	mux4to1 MUX_IN0(button_in, position, ctrl_button_in[0]);
 	mux4to1 MUX_IN1({1'b0, button_in[3], button_in_34, button_in_234}, position, ctrl_button_in[1]);
@@ -66,7 +66,7 @@ module button_in_module(
     wire [1:0] pos_n;
 
     not(pos_n[0], pos[0]);
-    not(pos_n[1], pos[2]);
+    not(pos_n[1], pos[1]);
 
     and(k[0], open, pos_n[1], pos_n[0]);
     and(k[1], open, pos_n[1], pos[0]);
